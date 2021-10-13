@@ -1,0 +1,37 @@
+Feature: Login
+    In order to make new subscriptions
+    As a registered, but not authenticated user
+    I need to login
+
+Scenario: Successful login with correct credentials
+    Given I am a registered user
+    And I am on homepage
+    When I open login form
+    And fill in my credentials
+    And submit the form
+    Then I should see my username
+    And I should be authenticated
+
+Scenario: Failed login form submission due to lack of credentials
+    Given I am on homepage
+    When I open login form
+    And submit the form
+    Then I should see "This field is required" near both inputs
+    When I fill in "username" with "anything"
+    And submit the form
+    Then I should see "This field is required" near "password" input
+    When I fill in "username" with ""
+    And I fill in "password" with "anything"
+    Then I should see "This field is required" near "username" input
+    
+Scenario: Failed login due to incorrect username or password
+    Given I am a registered user
+    And I am on homepage
+    When I open login form
+    And fill in incorrect credentials
+    And submit the form
+    Then I should see "Invalid username or password"
+    When I fill in correct username
+    And I fill in incorrect password
+    And submit the form
+    Then I should see "Invalid username or password"
